@@ -1,46 +1,62 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Contact from "./contact";
 import FormContact from "./formContact"
 
 
 class EditedContact extends Component {
-  constructor(props) {
-    super(props)
+    constructor(props) {
+        super(props);
 
-    this.ChangeEdited = this.ChangeEdited.bind(this);
-    this.CancelEdited = this.CancelEdited.bind(this)
+        this.ChangeEdited = this.ChangeEdited.bind(this);
+        this.CancelEdited = this.CancelEdited.bind(this);
+        this.sendTopPropsEdited = this.sendTopPropsEdited.bind(this)
 
-    this.state = {
-      isEdited: false
+        this.state = {
+            isEdited: false
+        }
     }
-  }
 
-  ChangeEdited() {
-    this.setState(
-      {
-        isEdited: true
-      }
-    )
-  }
+    ChangeEdited() {
+        this.setState(
+            {
+                isEdited: true
+            }
+        )
+    }
 
-  CancelEdited() {
-    this.setState(
-      {
-        isEdited: false
-      }
-    )
-  }
+    CancelEdited() {
+        this.setState(
+            {
+                isEdited: false
+            }
+        )
+    }
 
-  render() {
-    const { data } = this.props
-    if (this.state.isEdited)
-      return <FormContact
-        data={data}
-        isCancel={this.CancelEdited}
-      />
+    sendTopPropsEdited(updateContact,id){
+        this.setState(
+            {
+                isEdited: false
+            }
+        );
 
-    return <Contact contact={data} edited={this.ChangeEdited} />
-  }
+        this.props.topPropsSubmitForm(updateContact,id)
+    }
+
+    render() {
+        const {data} = this.props;
+        if (this.state.isEdited)
+            return <FormContact
+                data={data}
+                isCancel={this.CancelEdited}
+                submitFormEditedContact = {this.sendTopPropsEdited}
+            />;
+
+        return <Contact
+            contact={data}
+            edited={this.ChangeEdited}
+            trashed = {(id)=>this.props.sendTopPropsTrashed(id)}
+        />
+    }
 
 }
 
